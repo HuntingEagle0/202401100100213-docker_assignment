@@ -1,0 +1,25 @@
+# Environment variables & secrets
+.env
+*.key
+.cosign-docker/
+.docker-tmp/
+.empty
+
+# Tools and binaries
+cosign.exe
+git/
+trivy-bin/
+trivy.zip
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/

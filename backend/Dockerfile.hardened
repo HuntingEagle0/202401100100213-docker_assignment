@@ -1,0 +1,24 @@
+# Stage 3 hardened image - fest-backend:0.2
+FROM python:3.11-slim
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+# pip cache mount: psycopg2 is downloaded once, reused every rebuild
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --default-timeout=1000 --retries 10 -r requirements.txt && \
+    pip install --upgrade "jaraco.context>=6.1.0" "wheel>=0.46.2"
+
+COPY app.py .
+
+# Set ownership and switch to non-root user
+RUN chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
